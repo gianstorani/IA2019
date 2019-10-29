@@ -1,0 +1,59 @@
+from simpleai.search import SearchProblem
+
+INITIAL = [[0,0,F,F,0,0],
+[0,0,F,F,0,0],
+[M,F,F,F,0,0],
+[F,F,F,0,0,0],
+[F,F,0,0,0,0],
+[F,0,0,0,0,S],
+[[4,4,0],[4,5,0],[5,4,0]]]  #Ubición de los barcos piratas (x,y,z) donde "x" es la fila, "y" la columna y "z" si tiene el mapa o no.
+
+def franceses(state):
+    pos_franceses==[]
+    for fila in state-1:
+        for posicion in fila:
+            if posicion='F':
+                pos_franceses.append[fila,posicion]
+    return pos_franceses
+
+def mapa(state):
+    pos_mapa==[]
+    for fila in state-1:
+        for posicion in fila:
+            if posicion='M'
+                pos_mapa = [fila,posicion]
+    return pos_mapa
+
+def salida(state)
+    pos_salida==[]
+    for fila in state-1:
+        for posicion in fila:
+            if posicion='S'
+                pos_salida == [fila,posicion]
+    return pos_salida
+
+
+class ProblemaPiratas(SearchProblem):
+    def initial()
+        return STATE==INITIAL
+
+    def actions(self, state):
+        
+
+    def result(self, state, action):
+        
+
+    def is_goal(self, state):
+        fila_salida = salida(state)[0]
+        col_salida = salida(state)[1]
+        for barco in state[6]
+            if (barco[0]=fila_salida) and (barco[1]=col_salida) and (barco[2]=1):
+                return true
+
+    def heuristic(self, state):
+
+problem = ProblemaPiratas(initial_state='')
+result = astar(problem)
+
+print(result.state)
+print(result.path())
