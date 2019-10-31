@@ -1,4 +1,9 @@
-from simpleai.search import SearchProblem
+from simpleai.search import SearchProblem, hill_climbing, hill_climbing_random_restarts, beam, simulated_annealing
+from simpleai.search.traditional import breadth_first, depth_first, limited_depth_first, iterative_limited_depth_first, \
+    uniform_cost, greedy, astar
+from simpleai.search.viewers import WebViewer, ConsoleViewer, BaseViewer
+import math
+import random
 
 INITIAL = [[0,0,F,F,0,0],
 [0,0,F,F,0,0],
@@ -8,40 +13,65 @@ INITIAL = [[0,0,F,F,0,0],
 [F,0,0,0,0,S],
 [[4,4,0],[4,5,0],[5,4,0]]]  #Ubición de los barcos piratas (x,y,z) donde "x" es la fila, "y" la columna y "z" si tiene el mapa o no.
 
-def franceses(state):
-    pos_franceses==[]
-    for fila in state-1:
+def franceses(state): #Devuelve una lista de listas (x,y) de la fila y columna de cada barco frances
+    pos_franceses=[]
+    for fila in state-1: ## Preguntar si así se recorre todo menos la ultima lista
         for posicion in fila:
             if posicion='F':
                 pos_franceses.append[fila,posicion]
     return pos_franceses
 
-def mapa(state):
-    pos_mapa==[]
-    for fila in state-1:
+def mapa(state): #Devuelve una lista de dos elementos (x,y) de la fila y columna de la posicion del mapa
+    pos_mapa=[]
+    for fila in state-1: ## Preguntar si así se recorre todo menos la ultima lista
         for posicion in fila:
             if posicion='M'
                 pos_mapa = [fila,posicion]
-    return pos_mapa
+                return pos_mapa
 
-def salida(state)
+def salida(state) #Devuelve una lista de dos elementos (x,y) de la fila y columna de la posicion de la salida
     pos_salida==[]
-    for fila in state-1:
+    for fila in state-1: ## Preguntar si así se recorre todo menos la ultima lista
         for posicion in fila:
             if posicion='S'
                 pos_salida == [fila,posicion]
-    return pos_salida
+                return pos_salida
 
 
 class ProblemaPiratas(SearchProblem):
     def initial()
-        return STATE==INITIAL
+        return STATE=INITIAL
 
-    def actions(self, state):
-        
+    def actions(self, state): #Devuelve todas las acciones posibles para los barcos, menos salir del mapa.
+        barcos = state(6)
+        movimientos = []
+        for pirata in barcos
+            if pirata[0]>0
+                movimientos.append[pirata[0]-1,pirata[1],pirata] #Fila resultante, columna y pirata a mover
+            if pirata[0]<6
+                movimientos.append[pirata[0]+1,pirata[1],pirata] #Fila resultante, columna y pirata a mover
+            if pirata[1]>0
+                movimientos.append[pirata[0],pirata[1]-1,pirata] #Fila, columna resultante y pirata a mover
+            if pirata[1]<6
+                movimientos.append[pirata[0],pirata[1]+1,pirata] #Fila, columna resultante y pirata a mover
+        return movimientos
 
     def result(self, state, action):
-        
+        fila,columna,pirata = action #Divido las 3 partes de la acción.
+        fila=list(fila)
+        columna= list(columna)
+        pirata = list(pirata)
+        estado = list (state)
+        if (estado[fila][columna]=='F') #Si hay un frances en la posicion destino, podemos usar la función franceses
+            estado[fila][columna]=0 #Se elimina el barco frances
+            estado[6].pop(pirata)  #Se elimina el barco pirata
+        else
+            if (estado[fila][columna]=='M') #Si está el mapa en la posición destino
+                estado[6][pirata][2]=1 #Se le cambia a 1 el ultimo elemento del pirata
+            estado[6][pirata][0]=fila #Si no hay un frances en la posicion destino tambien se modifica la fila y la columna
+            estado[6][pirata][1]=columna
+        return tuple(estado)
+
 
     def is_goal(self, state):
         fila_salida = salida(state)[0]
@@ -49,6 +79,9 @@ class ProblemaPiratas(SearchProblem):
         for barco in state[6]
             if (barco[0]=fila_salida) and (barco[1]=col_salida) and (barco[2]=1):
                 return true
+
+    def heuristic(self, state1, action, state2):
+        return 1
 
     def heuristic(self, state):
 
